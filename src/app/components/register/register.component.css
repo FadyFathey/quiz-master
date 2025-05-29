@@ -1,0 +1,493 @@
+/* Header */
+.header {
+  padding: 1.5rem 0;
+  text-align: center;
+}
+
+.logo {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 0.3rem;
+  animation: slideInDown 1s ease-out;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.logo:hover {
+  color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+.tagline {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  animation: slideInDown 1s ease-out 0.2s both;
+}
+
+/* Register Container */
+.register-container {
+  min-height: calc(100vh - 180px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.register-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: 30px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 500px;
+  animation: slideInUp 1s ease-out 0.4s both;
+  position: relative;
+  overflow: hidden;
+}
+
+.register-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: var(--secondary-gradient);
+  border-radius: 30px 30px 0 0;
+}
+
+.register-card::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.register-card:hover::after {
+  opacity: 1;
+}
+
+.register-title {
+  color: white;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.register-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+/* Multi-step Progress */
+.progress-container {
+  margin-bottom: 2rem;
+}
+
+.progress-bar-custom {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--tertiary-gradient);
+  width: 33%;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+}
+
+.step-active {
+  color: white;
+  font-weight: 600;
+}
+
+/* Form Styles */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-floating {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.form-floating > .form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 18px;
+  color: white;
+  font-size: 1rem;
+  padding: 1.5rem 1rem 0.5rem;
+  height: auto;
+  transition: all 0.3s ease;
+}
+
+.form-floating > .form-control:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.form-floating > .form-control::placeholder {
+  color: transparent;
+}
+
+.form-floating > label {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+  color: rgba(255, 255, 255, 0.9);
+  transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+}
+
+/* Input Icons */
+.input-icon {
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  z-index: 5;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.form-floating:hover .input-icon {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Password Strength Indicator */
+.password-strength {
+  margin-top: 0.5rem;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.strength-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.strength-weak {
+  background: #dc3545;
+  width: 25%;
+}
+.strength-fair {
+  background: #fd7e14;
+  width: 50%;
+}
+.strength-good {
+  background: #ffc107;
+  width: 75%;
+}
+.strength-strong {
+  background: #28a745;
+  width: 100%;
+}
+
+/* Checkbox Styles */
+.form-check {
+  margin-bottom: 2rem;
+}
+
+.form-check-input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.form-check-input:checked {
+  background-color: #f093fb;
+  border-color: #f093fb;
+}
+
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(240, 147, 251, 0.25);
+}
+
+.form-check-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-left: 0.5rem;
+}
+
+.form-check-label a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: underline;
+  transition: all 0.3s ease;
+}
+
+.form-check-label a:hover {
+  color: white;
+}
+
+/* Register Button */
+.register-btn {
+  background: var(--secondary-gradient);
+  border: none;
+  border-radius: 50px;
+  padding: 1.2rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 15px 35px rgba(240, 147, 251, 0.4);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.register-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 45px rgba(240, 147, 251, 0.5);
+  color: white;
+}
+
+.register-btn:active {
+  transform: translateY(-2px);
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.divider span {
+  color: rgba(255, 255, 255, 0.6);
+  padding: 0 1rem;
+  font-size: 0.9rem;
+}
+
+/* Social Register */
+.social-register {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.social-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
+  padding: 1rem;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.social-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-3px);
+  color: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.social-btn.google {
+  background: rgba(219, 68, 55, 0.2);
+  border-color: rgba(219, 68, 55, 0.4);
+}
+
+.social-btn.facebook {
+  background: rgba(24, 119, 242, 0.2);
+  border-color: rgba(24, 119, 242, 0.4);
+}
+
+/* Auth Links */
+.auth-links {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.auth-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.auth-links a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Footer */
+.register-footer {
+  text-align: center;
+  padding: 1.5rem 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+
+/* Animations */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading State */
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+}
+
+.btn-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .register-card {
+    margin: 1rem;
+    padding: 2rem 1.5rem;
+  }
+
+  .logo {
+    font-size: 1.8rem;
+  }
+
+  .register-title {
+    font-size: 1.8rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .social-register {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .register-card {
+    border-radius: 20px;
+    padding: 1.5rem 1rem;
+  }
+
+  .form-floating > .form-control {
+    border-radius: 15px;
+  }
+
+  .social-btn {
+    border-radius: 15px;
+  }
+}
+
+/* Pulse animation for active elements */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(240, 147, 251, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(240, 147, 251, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(240, 147, 251, 0);
+  }
+}
+
+.register-btn:focus {
+  animation: pulse 2s infinite;
+}
