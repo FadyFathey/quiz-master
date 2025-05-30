@@ -1,3 +1,4 @@
+// app.module.ts
 import {
   SocialLoginModule,
   SocialAuthServiceConfig,
@@ -8,11 +9,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { HomeModule } from './home.module';
 import { LoginModule } from './components/login/login.module';
+import { RegisterModule } from './components/register/register.module';
 import { MainLayoutModule } from './layouts/main-layout.module';
-
+import { HttpClientModule } from '@angular/common/http';
+import { QuizModule } from './components/quiz/quiz.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -21,7 +23,10 @@ import { MainLayoutModule } from './layouts/main-layout.module';
     MainLayoutModule,
     HomeModule,
     LoginModule,
+    RegisterModule,
     SocialLoginModule,
+    HttpClientModule,
+    QuizModule,
   ],
   providers: [
     {
@@ -32,12 +37,16 @@ import { MainLayoutModule } from './layouts/main-layout.module';
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              '238827403896-54r3r17355gaekjcglcjomf94u3np3iv.apps.googleusercontent.com' // Your actual Client ID
+              '238827403896-54r3r17355gaekjcglcjomf94u3np3iv.apps.googleusercontent.com', // Your actual Client ID
+              {
+                oneTapEnabled: false, // Disable One Tap to avoid conflicts
+                scopes: 'openid profile email',
+              }
             ),
           },
         ],
         onError: (err: any) => {
-          console.error(err);
+          console.error('Social Auth Error:', err);
         },
       } as SocialAuthServiceConfig,
     },

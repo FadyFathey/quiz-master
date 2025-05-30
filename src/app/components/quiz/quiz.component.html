@@ -1,0 +1,277 @@
+<header class="quiz-header">
+  <div class="header-content">
+    <a href="#" class="logo">
+      <i class="fas fa-graduation-cap"></i> QuizMaster
+    </a>
+    <div class="quiz-stats" *ngIf="!quizCompleted">
+      <div class="stat-item">
+        <i class="fas fa-clock"></i>
+        <span>{{ getFormattedTime() }}</span>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-check-circle"></i>
+        <span>{{ getAnsweredCount() }}/{{ questions.length }}</span>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-chart-line"></i>
+        <span>{{ getProgressPercentage() }}%</span>
+      </div>
+    </div>
+    <div class="quiz-stats" *ngIf="quizCompleted && quizResult">
+      <div class="stat-item">
+        <i class="fas fa-trophy"></i>
+        <span>Quiz Completed!</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="quiz-container">
+  <!-- Quiz Content -->
+  <ng-container *ngIf="!quizCompleted; else resultsScreen">
+    <!-- Progress Section -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <div class="question-counter">
+          Question {{ currentIndex + 1 }} of {{ questions.length }}
+        </div>
+        <div class="timer">
+          <i class="fas fa-hourglass-half"></i>
+          <span>{{ getFormattedTime() }} remaining</span>
+        </div>
+      </div>
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          [style.width.%]="getProgressPercentage()"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Question Navigation -->
+    <div class="question-nav">
+      <h3><i class="fas fa-map"></i> Question Overview</h3>
+      <div class="question-grid">
+        <a
+          *ngFor="let q of questions; index as i"
+          href="#"
+          [class]="
+            'question-dot ' +
+            (i === currentIndex
+              ? 'current'
+              : answeredQuestions.includes(i)
+              ? 'answered'
+              : flaggedQuestions.includes(i)
+              ? 'flagged'
+              : '')
+          "
+          (click)="goToQuestion(i); $event.preventDefault()"
+          >{{ i + 1 }}</a
+        >
+      </div>
+    </div>
+
+    <!-- Question Card -->
+    <ng-container *ngIf="!isLoading; else loading">
+      <div class="question-card">
+        <button
+          class="flag-btn"
+          [class.flagged]="isQuestionFlagged()"
+          (click)="toggleFlag()"
+          title="Flag this question"
+        >
+          <i class="fas fa-flag"></i>
+        </button>
+
+        <div class="question-header">
+          <div class="question-type">
+            {{
+              questions[currentIndex].type === "multiple"
+                ? "Multiple Choice"
+                : "True/False"
+            }}
+          </div>
+          <h2 class="question-title">
+            {{ questions[currentIndex].question }}
+          </h2>
+
+          <div class="question-points">
+            <i class="fas fa-star"></i> Worth 10 points
+          </div>
+        </div>
+
+        <form class="answer-options">
+          <div
+            class="option"
+            *ngFor="
+              let answer of questions[currentIndex].shuffledAnswers;
+              index as i
+            "
+          >
+            <input
+              type="radio"
+              [id]="'option-' + i"
+              name="answer"
+              [value]="answer"
+              [checked]="selectedAnswers[currentIndex] === answer"
+              (change)="onAnswerSelect(answer)"
+            />
+            <label [for]="'option-' + i" class="option-label">
+              <div class="option-letter">
+                {{ ["A", "B", "C", "D"][i] }}
+              </div>
+              <div class="option-text">
+                {{ answer }}
+              </div>
+            </label>
+          </div>
+        </form>
+      </div>
+    </ng-container>
+
+    <ng-template #loading>
+      <div class="loading-spinner">
+        <svg viewBox="25 25 50 50">
+          <circle r="20" cy="50" cx="50"></circle>
+        </svg>
+      </div>
+    </ng-template>
+
+    <!-- Navigation -->
+    <div class="quiz-navigation">
+      <button
+        (click)="prevQuestion()"
+        class="nav-btn btn-secondary"
+        [disabled]="currentIndex === 0"
+      >
+        <i class="fas fa-arrow-left"></i>
+        Previous
+      </button>
+
+      <div style="display: flex; gap: 1rem">
+        <button
+          *ngIf="currentIndex < questions.length - 1"
+          (click)="nextQuestion()"
+          class="nav-btn btn-primary"
+        >
+          Next
+          <i class="fas fa-arrow-right"></i>
+        </button>
+
+        <button
+          *ngIf="currentIndex === questions.length - 1"
+          (click)="finishQuiz()"
+          class="nav-btn btn-primary"
+          [disabled]="!canFinishQuiz()"
+        >
+          <i class="fas fa-check"></i>
+          Finish Quiz
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Results Screen -->
+  <ng-template #resultsScreen>
+    <div class="results-container" *ngIf="quizResult">
+      <!-- Results Header -->
+      <div class="results-header">
+        <div class="score-circle">
+          <div class="score-percentage">{{ quizResult.percentage }}%</div>
+          <div class="score-grade">{{ getScoreGrade() }}</div>
+        </div>
+        <h2 class="results-title">Quiz Complete!</h2>
+        <p class="results-message">{{ getScoreMessage() }}</p>
+      </div>
+
+      <!-- Score Summary -->
+      <div class="score-summary">
+        <div class="summary-card">
+          <div class="summary-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="summary-content">
+            <div class="summary-number">{{ quizResult.correctAnswers }}</div>
+            <div class="summary-label">Correct Answers</div>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon">
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <div class="summary-content">
+            <div class="summary-number">
+              {{ quizResult.totalQuestions - quizResult.correctAnswers }}
+            </div>
+            <div class="summary-label">Incorrect Answers</div>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="summary-content">
+            <div class="summary-number">{{ quizResult.score }}</div>
+            <div class="summary-label">Total Score</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Results -->
+      <div class="detailed-results">
+        <h3>Review Your Answers</h3>
+        <div class="results-list">
+          <div
+            class="result-item"
+            *ngFor="let userAnswer of quizResult.userAnswers; index as i"
+            [class.correct]="userAnswer.isCorrect"
+            [class.incorrect]="
+              !userAnswer.isCorrect && userAnswer.selectedAnswer
+            "
+          >
+            <div class="result-header">
+              <div class="question-number">{{ i + 1 }}</div>
+              <div class="result-status">
+                <i class="fas fa-check" *ngIf="userAnswer.isCorrect"></i>
+                <i
+                  class="fas fa-times"
+                  *ngIf="!userAnswer.isCorrect && userAnswer.selectedAnswer"
+                ></i>
+                <i class="fas fa-minus" *ngIf="!userAnswer.selectedAnswer"></i>
+              </div>
+            </div>
+
+            <div class="result-content">
+              <div class="question-text">{{ questions[i].question }}</div>
+
+              <div class="answer-comparison" *ngIf="userAnswer.selectedAnswer">
+                <div class="user-answer">
+                  <strong>Your answer:</strong> {{ userAnswer.selectedAnswer }}
+                </div>
+                <div class="correct-answer" *ngIf="!userAnswer.isCorrect">
+                  <strong>Correct answer:</strong>
+                  {{ userAnswer.correctAnswer }}
+                </div>
+              </div>
+
+              <div class="no-answer" *ngIf="!userAnswer.selectedAnswer">
+                <strong>No answer provided</strong><br />
+                <span>Correct answer: {{ userAnswer.correctAnswer }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="results-actions">
+        <button class="nav-btn btn-primary" (click)="restartQuiz()">
+          <i class="fas fa-redo"></i>
+          Take Quiz Again
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</main>

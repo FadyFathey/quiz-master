@@ -93,3 +93,34 @@
 .register-icon {
   margin-right: 10px;
 }
+
+.social-btn.google {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  width: auto;
+  min-width: 120px;
+}
+
+.social-btn.google:hover {
+  background-color: #3367d6;
+  color: white;
+}
+
+.social-register {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
